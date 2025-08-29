@@ -36,6 +36,7 @@ const Total = (props) => {
 
 const App = () => {
  
+  /*Exercise 1.3 : Course Information step 3 */
   const course = 'Half Stack application development'
   const part1 = {
     name: "Fundamentals of React",
@@ -49,7 +50,7 @@ const App = () => {
     name: "State of a component",
     exercises: 14
   }
-
+    
   return (
     <div>
       <Header course={course} />
