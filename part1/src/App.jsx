@@ -1,4 +1,6 @@
 
+import { useState } from "react";
+
 const Header = (props) => {
   const {course} = props;
   return (
@@ -34,8 +36,40 @@ const Total = (props) => {
   )
 }
 
-const App = () => {
- 
+/* part1C: Component state, event handlers */
+const Display = ({value, text}) => (<p>{text}{value}</p>);
+const MyButton = ( { handlerClick, btnText } ) => (<button onClick={handlerClick}>{ btnText }</button>); 
+
+const ShowSeconds = () => {
+  const [counter, setCounter] = useState(0);
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )    
+  console.log('Rendering ...', counter);
+  return (
+    <Display value={counter} text="seconds: " />
+  )
+}
+
+const ManualCounter = () => {
+  const [manualCounter, setManualCounter] = useState(0);
+
+  const increaseValue = () => setManualCounter(manualCounter + 1);
+  const decreaseValue = () => setManualCounter(manualCounter - 1);
+  const setToZero = () => setManualCounter(0);
+  return (
+    /* part1C: Component state, event handlers */
+    <>
+      <Display value={manualCounter} text="Manual Counter: " />
+      <MyButton handlerClick = { increaseValue } btnText = "Increase value" />
+      <MyButton handlerClick = { setToZero } btnText = "Set to zero" />      
+      <MyButton handlerClick = { decreaseValue } btnText = "Decrease value" />    
+    </>
+  )
+}
+
+const App = () => { 
   /*Exercise 1.5 : Course Information step 5  */
   const course = {
     name: 'Half Stack application development',
@@ -60,6 +94,8 @@ const App = () => {
       <Header course={course.name} />
       <Content parts={course.parts} />
       <Total parts={course.parts} />
+      <ShowSeconds /> 
+      <ManualCounter />
     </div>
   )
 }
