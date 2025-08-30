@@ -119,15 +119,14 @@ const Statistics = ({good, neutral, bad}) => {
   const average = ((good * 1) + (neutral * 0) + (bad * -1)) / total;
   const positive = (good / total) * 100;
 
-  return (<>
-    <h2>statistics</h2>
-      <Display text="good " value={good} />
-      <Display text="neutral " value={neutral} />
-      <Display text="bad " value={bad} />
-      <Display text="all " value={good + neutral + bad} />
-      <Display text="average " value={average}/>
-      <Display text="positive " value={positive} unit="%"/>
-    </>)
+  return (<>    
+    <Display text="good " value={good} />
+    <Display text="neutral " value={neutral} />
+    <Display text="bad " value={bad} />
+    <Display text="all " value={good + neutral + bad} />
+    <Display text="average " value={average}/>
+    <Display text="positive " value={positive} unit="%"/>
+  </>)
 }
 
 const App = () => { 
@@ -142,7 +141,12 @@ const App = () => {
       <MyButton btnText="good" handlerClick={()=>setGood(good + 1)}/>
       <MyButton btnText="neutral" handlerClick={()=>setNeutral(neutral + 1)}/>
       <MyButton btnText="bad" handlerClick={()=>setBad(bad + 1)}/>
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      <h2>statistics</h2>
+      { /* 1.9: unicafe step 4 */
+        (good !== 0 | neutral !== 0 | bad !== 0)
+        ? <Statistics good={good} neutral={neutral} bad={bad} />
+        : <p>No feedback given</p>
+      }
     </div>
   )
 }
