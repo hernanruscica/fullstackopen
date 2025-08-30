@@ -113,6 +113,14 @@ const ClicksLog = () => {
   )
 }
 
+/* const Display = ({value, text, unit=''}) => (<p>{text} {(!isNaN(value) ? value : 0)} {unit}</p>); */
+const StatisticLine = ({value, text, unit=''}) => {
+  return (
+    <tr>
+      <td>{text}</td><td>{value}{unit}</td>
+    </tr>
+  )
+}
 
 /* 1.8: unicafe step 3  */
 const Statistics = ({good, neutral, bad}) => {  
@@ -120,15 +128,19 @@ const Statistics = ({good, neutral, bad}) => {
   const average = ((good * 1) + (neutral * 0) + (bad * -1)) / total;
   const positive = (good / total) * 100;
 
-  /*1.10: unicafe step 5 I have already made, but I call it 'Display' instead of 'StatisticLine'*/
-  return (<>          
-    <Display text="good " value={good} />
-    <Display text="neutral " value={neutral} />
-    <Display text="bad " value={bad} />
-    <Display text="all " value={good + neutral + bad} />
-    <Display text="average " value={average}/>
-    <Display text="positive " value={positive} unit="%"/>
-  </>)
+  /*1.10: unicafe step 5 I have already made, but I called it, 'Display' instead of 'StatisticLine'. 
+    1.11* But now I see it must to be a table ... ;) */
+  return (
+  <table>          
+    <tbody>
+      <StatisticLine text="good " value={good} />
+      <StatisticLine text="neutral " value={neutral} />
+      <StatisticLine text="bad " value={bad} />
+      <StatisticLine text="all " value={good + neutral + bad} />
+      <StatisticLine text="average " value={average}/>
+      <StatisticLine text="positive " value={positive} unit="%"/>      
+    </tbody>
+  </table>)
 }
 
 const App = () => { 
