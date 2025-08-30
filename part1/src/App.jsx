@@ -113,17 +113,28 @@ const ClicksLog = () => {
   )
 }
 
-const App = () => { 
-  /* 1.7: unicafe step 2  */
-  
-  // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+/* 1.8: unicafe step 3  */
+const Statistics = ({good, neutral, bad}) => {  
   const total = good + neutral + bad;
   const average = ((good * 1) + (neutral * 0) + (bad * -1)) / total;
   const positive = (good / total) * 100;
 
+  return (<>
+    <h2>statistics</h2>
+      <Display text="good " value={good} />
+      <Display text="neutral " value={neutral} />
+      <Display text="bad " value={bad} />
+      <Display text="all " value={good + neutral + bad} />
+      <Display text="average " value={average}/>
+      <Display text="positive " value={positive} unit="%"/>
+    </>)
+}
+
+const App = () => { 
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
   return (
     <div>
@@ -131,13 +142,7 @@ const App = () => {
       <MyButton btnText="good" handlerClick={()=>setGood(good + 1)}/>
       <MyButton btnText="neutral" handlerClick={()=>setNeutral(neutral + 1)}/>
       <MyButton btnText="bad" handlerClick={()=>setBad(bad + 1)}/>
-      <h2>statistics</h2>
-      <Display text="good " value={good} />
-      <Display text="neutral " value={neutral} />
-      <Display text="bad " value={bad} />
-      <Display text="all " value={good + neutral + bad} />
-      <Display text="average " value={average}/>
-      <Display text="positive " value={positive} unit="%"/>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
