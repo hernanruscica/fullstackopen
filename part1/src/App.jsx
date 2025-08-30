@@ -37,7 +37,7 @@ const Total = (props) => {
 }
 
 /* part1C: Component state, event handlers */
-const Display = ({value, text}) => (<p>{text}{value}</p>);
+const Display = ({value, text, unit=''}) => (<p>{text} {(!isNaN(value) ? value : 0)} {unit}</p>);
 const MyButton = ( { handlerClick, btnText } ) => (<button onClick={handlerClick}>{ btnText }</button>); 
 
 const ShowSeconds = () => {
@@ -114,16 +114,30 @@ const ClicksLog = () => {
 }
 
 const App = () => { 
-  /* 1.6: unicafe step 1  */
+  /* 1.7: unicafe step 2  */
   
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const total = good + neutral + bad;
+  const average = ((good * 1) + (neutral * 0) + (bad * -1)) / total;
+  const positive = (good / total) * 100;
+
 
   return (
     <div>
-      code here
+      <h1>give feedBack</h1>
+      <MyButton btnText="good" handlerClick={()=>setGood(good + 1)}/>
+      <MyButton btnText="neutral" handlerClick={()=>setNeutral(neutral + 1)}/>
+      <MyButton btnText="bad" handlerClick={()=>setBad(bad + 1)}/>
+      <h2>statistics</h2>
+      <Display text="good " value={good} />
+      <Display text="neutral " value={neutral} />
+      <Display text="bad " value={bad} />
+      <Display text="all " value={good + neutral + bad} />
+      <Display text="average " value={average}/>
+      <Display text="positive " value={positive} unit="%"/>
     </div>
   )
 }
