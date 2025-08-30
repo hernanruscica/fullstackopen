@@ -113,13 +113,15 @@ const ClicksLog = () => {
   )
 }
 
+
 /* 1.8: unicafe step 3  */
 const Statistics = ({good, neutral, bad}) => {  
   const total = good + neutral + bad;
   const average = ((good * 1) + (neutral * 0) + (bad * -1)) / total;
   const positive = (good / total) * 100;
 
-  return (<>    
+  /*1.10: unicafe step 5 I have already made, but I call it 'Display' instead of 'StatisticLine'*/
+  return (<>          
     <Display text="good " value={good} />
     <Display text="neutral " value={neutral} />
     <Display text="bad " value={bad} />
