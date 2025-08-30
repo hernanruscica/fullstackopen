@@ -69,6 +69,50 @@ const ManualCounter = () => {
   )
 }
 
+/* part 1 d Complex state */
+const ClicksLog = () => {  
+  
+  const [ clicks, setClicks ] = useState({left: 0, right: 0 });   
+  const [allClicks, setAll] = useState([]);
+  const [total, setTotal] = useState(0)
+  
+  const handleLeftClick = () => {
+    const updatedLeft = clicks.left + 1;
+    setClicks({
+      left: updatedLeft,
+      right: clicks.right
+    });
+    /* setTotal(clicks.left + clicks.right); This doesn't work */
+    setTotal(updatedLeft + clicks.right);    
+    setAll(allClicks.concat('L'));
+  }
+
+  const handleRightClick = () => {
+    const updatedRight = clicks.right + 1;
+    /* With object spread ... */
+    setClicks({
+      ...clicks,
+      right: updatedRight
+    });
+    setTotal(clicks.left + updatedRight);
+    setAll(allClicks.concat('R'));
+  }
+
+  return (
+    <div>
+      <Display value={clicks.left} text="lefts clicks: " />
+      <Display value={clicks.right} text="rights clicks: " />
+      <Display value={total} text="Total clicks: " />
+      <MyButton handlerClick = { handleLeftClick } btnText = "Left" /> 
+      <MyButton handlerClick = { handleRightClick } btnText = "Right" />    
+      {(allClicks.length > 0)
+      ? <Display value={allClicks.join(' ')} text="button press history: " />
+      : <p>the app is used by pressing the buttons</p>
+      }  
+    </div>
+  )
+}
+
 const App = () => { 
   /*Exercise 1.5 : Course Information step 5  */
   const course = {
@@ -94,8 +138,9 @@ const App = () => {
       <Header course={course.name} />
       <Content parts={course.parts} />
       <Total parts={course.parts} />
-      <ShowSeconds /> 
+      {/* <ShowSeconds />  */}
       <ManualCounter />
+      <ClicksLog />
     </div>
   )
 }
