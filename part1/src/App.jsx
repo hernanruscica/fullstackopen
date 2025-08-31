@@ -134,7 +134,9 @@ const Anecdotes = () => {
     'The only way to go fast, is to go well.'
   ]   
   const [selected, setSelected] = useState(0);
-  const [votes, setVotes] = useState({0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0});
+  //const [votes, setVotes] = useState({0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0});
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
+  const [mostVoted, setMostVoted] = useState([-1]);
 
   const generateRandom = (min, max) => {
     min = Math.ceil(min); 
@@ -147,11 +149,18 @@ const Anecdotes = () => {
     setSelected(nextAnecdote);
   }
 
+  /* 1.13*: anecdotes step 2 */
   const handlerVoteAnecdote = () => {    
-    const updatedVotes = { ...votes };
-    updatedVotes[selected] += 1;
-    setVotes(updatedVotes);
+    const updatedVotes = [...votes] ;   
+    //console.log(updatedVotes) 
+    updatedVotes[selected] += 1;    
+    setVotes(updatedVotes);    
+    const updatedMax = Math.max(...updatedVotes);
+    const updatedMaxIndex = updatedVotes.indexOf(updatedMax);
+    //console.log(updatedVotes, updatedMax, updatedMaxIndex);
+    setMostVoted(updatedMaxIndex);
   }
+  
   
   return (
     <>
@@ -161,6 +170,13 @@ const Anecdotes = () => {
       </p>
       <MyButton btnText="vote" handlerClick={handlerVoteAnecdote}/>
       <MyButton btnText="next anecdote" handlerClick={handlerNextAnecdote}/>
+
+      {/* 1.14*: anecdotes step 3 */}
+      <h3>Anecdote with most votes</h3>
+       {(mostVoted > -1)
+        ?<p>{anecdotes[mostVoted]}</p>
+        :<p>No votes yet!</p>
+      } 
     </>
   )
 }
