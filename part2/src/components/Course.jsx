@@ -6,20 +6,18 @@ const Header = (props) => {
 }
 
 const Part = ({part}) => {    
-    const { name, exercises, id} = part;
-    //console.log(id);    
+    const { name, exercises, id} = part;    
     return (
         <p>{ name } { exercises } </p>
     )
 }
 
-const Content = ({parts}) => {        
-    
+const Content = ({parts}) => {           
     const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);    
     return (
         <>            
             { parts.map(part=><Part key={part.id} part={part} />) }
-            <p>Total of { totalExercises } exercises</p>
+            <p><strong>Total of { totalExercises } exercises</strong></p>
         </>
     )
 }
