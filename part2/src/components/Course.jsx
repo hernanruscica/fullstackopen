@@ -15,9 +15,11 @@ const Part = ({part}) => {
 
 const Content = ({parts}) => {        
     
+    const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);    
     return (
         <>            
             { parts.map(part=><Part key={part.id} part={part} />) }
+            <p>Total of { totalExercises } exercises</p>
         </>
     )
 }
