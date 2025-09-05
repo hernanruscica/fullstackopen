@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios';
 
+/*
 const personsSeed = [
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
     { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ];
+  */
 
 const Filter = ({value, onChange}) => {
   return (
@@ -48,11 +51,19 @@ const Persons = ({list}) => {
 
 const App = () => {
   
-  const [persons, setPersons] = useState(personsSeed);
-  const [filteredPersons, setFilteredPersons ] = useState(personsSeed);
+  const [persons, setPersons] = useState([]);
+  const [filteredPersons, setFilteredPersons ] = useState([]);
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons')
+         .then(response => {
+            setPersons(response.data);
+            setFilteredPersons(response.data);
+         })
+  }, []);
 
   const handleChangeName = (event) => {
     setNewName(event.target.value);
@@ -68,10 +79,10 @@ const App = () => {
   ];
 
   const handleChangeSearchTerm = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setSearchTerm(event.target.value);       
     const filteredPersons = persons.filter(person => person.name.includes(event.target.value));
-    console.log(filteredPersons);
+    //console.log(filteredPersons);
     setFilteredPersons(filteredPersons);
   }
 
