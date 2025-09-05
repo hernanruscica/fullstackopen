@@ -1,39 +1,56 @@
 import { useState } from 'react'
+import Note from './components/Note'
 
-const App = () => {
-  const [persons, setPersons] = useState([
-    { id: 0, name: 'Arto Hellas' }
-  ]) 
-  const [newName, setNewName] = useState('')
+const App = ( props ) => {
+  const [notes, setNotes] = useState(props.notes);
+  const [newNote, setNewnote] = useState('A new note ...');
+  const [showAll, setShowAll] = useState(true);
 
-  const handleChangeName = (event) => {
-    setNewName(event.target.value);
-  }
-
-  const handleSubmit = (event) => {
+  const addNote = (event) => {
     event.preventDefault();
-    const newPerson = {
-      id: persons.length + 1,
-      name: newName,
+    const noteObject = {
+      id: String(notes.length + 1),
+      content: newNote,
+      important: Math.random() < 0.5,
     };
-    setPersons(persons.concat(newPerson));
+   // console.log(noteObject);
+    
+    setNotes(notes.concat(noteObject));
+    setNewnote('');
   }
+  const handleNoteChange = (event) => {
+    console.log(event.target.value);
+    setNewnote(event.target.value);
+  }
+
+  const notesToShow = showAll 
+    ? notes
+    : notes.filter(n => n.important === true);
+
+    //console.log(showAll, notesToShow);
+    
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleChangeName}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
+      <h1>Notes</h1>
+      <div>
+        <button onClick={() => {setShowAll(!showAll)}}>
+          show { showAll ? 'important' : 'all'}
+        </button>
+      </div>
+      <ul>
+        {notesToShow.map((note) => (
+          <Note key={note.id} note={note} />
+        ))}
+      </ul>
+      <form onSubmit={addNote}>
+        <input type="text"
+               value={newNote} 
+               onChange={handleNoteChange}/>
+        <button type="submit">
+          save
+        </button>
       </form>
-      <h2>Numbers</h2>
-      {
-        persons.map(person=><p key={person.id}>{person.name}</p>)
-      }
     </div>
   )
 }
