@@ -99,7 +99,7 @@ const App = () => {
     const nameAlreadyExists = personNames.filter(pName => pName == newName).length > 0;
     //console.log('person already exists?', nameAlreadyExists);
     if (!nameAlreadyExists){
-      const newPersonsArray = persons.concat(newPerson)
+      //const newPersonsArray = persons.concat(newPerson)
       setPersons(newPersonsArray);
       setFilteredPersons(newPersonsArray)
       setSearchTerm('');
