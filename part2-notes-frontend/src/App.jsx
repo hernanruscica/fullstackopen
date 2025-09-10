@@ -41,6 +41,10 @@ const App = () => {
       //maps the notes array, if note.id is noteId, inserts response.data, if isnt left the same note item
       const updatedNotes = notes.map(note => note.id === noteId ? updatedNote : note)      
       setNotes(updatedNotes);
+    }).catch(error => {
+      alert(`Error updating note con id: ${noteId}. \nERROR: ${error.response.data}`);
+      setNotes(notes.filter(note => note.id !== noteId));
+      console.log('error', error);
     })
   }
 
