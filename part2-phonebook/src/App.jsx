@@ -4,6 +4,7 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import { calculateFirstSpace } from './utils/Utils';
+import Notification from './components/Notification/Notification';
 
 const App = () => {  
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('');
   const [searchTerm, setSearchTerm] = useState(''); 
+  const [notification, setNotification] = useState({message: null, type: 'ok'});
 
   useEffect(() => {  
     ServicePhonebook.GetAll().then((persons) => {
@@ -47,12 +49,27 @@ const App = () => {
     //console.log(`click on delete - id: ${id}`);
     const confirmDelete = window.confirm(`Delete ${name} ?`)
     if (confirmDelete){
-      ServicePhonebook.Delete(id).then(deletedPerson => {
+      ServicePhonebook.Delete(id)
+      .then(deletedPerson => {
         //console.log('deletedPerson', deletedPerson);
         const updatedPersons = persons.filter(p=>p.id !== id);
         setPersons(updatedPersons);
-        setFilteredPersons(updatedPersons);      
-        });
+        setFilteredPersons(updatedPersons);
+        setNotification({message: `Information of ${deletedPerson.name} deleted from server`, type: 'ok'});
+            setTimeout(() => {
+              setNotification({message: null, type: 'ok'});
+            }, 2500);    
+        })
+      .catch(error => {
+            setNotification({message: `Information of ${name} has already been removed from server`, type: 'error'});
+            setTimeout(() => {
+              setNotification({message: null, type: 'ok'});
+            }, 2500);
+            const updatedPersons = persons.filter(p => p.id !== id);
+            setPersons(updatedPersons);
+            setFilteredPersons(updatedPersons);          
+            setSearchTerm('');            
+          });
       }
   }
 
@@ -75,6 +92,10 @@ const App = () => {
         setPersons(persons.concat(addedPerson));
         setFilteredPersons(persons.concat(addedPerson));
         setSearchTerm('');
+        setNotification({message: `Added ${addedPerson.name}`, type: 'ok'});
+        setTimeout(() => {
+          setNotification({message: null, type: 'ok'});
+        }, 2500);
       })
     }else{
       const updateNumber = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
@@ -82,26 +103,35 @@ const App = () => {
         //console.log('update number section')
         const personUpdatedNumber = {
           id: personAlreadyStored.id, name: personAlreadyStored.name, number: newNumber
-        }
-        // console.log('personUpdatedNumber', personUpdatedNumber);
-        // console.log('id', personUpdatedNumber.id);
+        } 
         
-        
-        ServicePhonebook.Update(personUpdatedNumber, personUpdatedNumber.id).then(addedPerson => {
-          // setPersons(persons.concat(addedPerson));
-          // setFilteredPersons(persons.concat(addedPerson));
-          console.log('addedPerson', addedPerson);
+        ServicePhonebook.Update(personUpdatedNumber, personUpdatedNumber.id)
+          .then(addedPerson => {    
           const updatedPersons = persons.filter(p => p.id !== addedPerson.id).concat(addedPerson);
           setPersons(updatedPersons);
           setFilteredPersons(updatedPersons);          
           setSearchTerm('');
         })
+          .catch(error => {
+            setNotification({message: `Information of ${newName} has already been removed from server`, type: 'error'});
+            setTimeout(() => {
+              setNotification({message: null, type: 'ok'});
+            }, 2500);
+            const updatedPersons = persons.filter(p => p.id !== personUpdatedNumber.id);
+            setPersons(updatedPersons);
+            setFilteredPersons(updatedPersons);          
+            setSearchTerm('');            
+          });
       }
     }
   }
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification 
+        message={notification?.message} 
+        type={notification?.type}
+      />
       <Filter 
         value={searchTerm}
         onChange={handleChangeSearchTerm}
