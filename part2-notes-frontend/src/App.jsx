@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import Note from './components/Note'
 import ServiceNotes from './services/ServiceNotes';
+import Notification from './components/Notification/Notification';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewnote] = useState('A new note ...');
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     ServiceNotes.GetAll().then((allNotes) => {
@@ -42,8 +45,13 @@ const App = () => {
       const updatedNotes = notes.map(note => note.id === noteId ? updatedNote : note)      
       setNotes(updatedNotes);
     }).catch(error => {
-      alert(`Error updating note con id: ${noteId}. \nERROR: ${error.response.data}`);
-      setNotes(notes.filter(note => note.id !== noteId));
+        //alert(`Error updating note con id: ${noteId}. \nERROR: ${error.response.data}`);      
+        setErrorMessage(`The note '${currentNote?.content}' was already removed from server`);
+        setTimeout(() => {
+           setErrorMessage(null);
+        }, 5000);
+      
+        setNotes(notes.filter(note => note.id !== noteId));
       console.log('error', error);
     })
   }
@@ -58,6 +66,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage}/>
       <div>
         <button onClick={() => {setShowAll(!showAll)}}>
           show { showAll ? 'important' : 'all'}
@@ -76,6 +85,7 @@ const App = () => {
           save
         </button>
       </form>
+      <Footer />
     </div>
   )
 }
