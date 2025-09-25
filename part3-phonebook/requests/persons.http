@@ -1,0 +1,25 @@
+
+@base_url = http://localhost:3000/api
+get {{base_url}}/persons
+
+### Delete test for user 4
+delete {{base_url}}/persons/4
+
+### PUT test for user 1
+
+put {{base_url}}/persons/1
+Content-Type: application/json
+
+{
+    "name": "cesar ruscica",
+    "number": "1132924558"
+}
+
+### post test
+post {{base_url}}/persons
+Content-Type: application/json
+
+{
+    "name": "Ada Lovelace",
+    "number": ""
+}
