@@ -1,7 +1,8 @@
 //console.log('hello world 2')
 const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
-app.use(express.json());
 const PORT = 3000;
 const fs = require('fs');
 const dataURL = './data.json';
@@ -11,6 +12,15 @@ const saveData = (fileURL, data) => {
     fs.writeFileSync(fileURL, JSON.stringify(data, null, 2));
     return true;
 }
+
+morgan.token('body', function (req, res) {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+app.use(cors());
+app.use(express.json());
+
 
 app.get('/api/persons', (request, response) => {      
     response.json(persons);
@@ -93,6 +103,12 @@ app.post('/api/persons', (request, response) => {
 
     
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

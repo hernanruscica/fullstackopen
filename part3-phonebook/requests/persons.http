@@ -3,7 +3,7 @@
 get {{base_url}}/persons
 
 ### Delete test for user 4
-delete {{base_url}}/persons/4
+delete {{base_url}}/persons/175881300949215
 
 ### PUT test for user 1
 
@@ -11,7 +11,7 @@ put {{base_url}}/persons/1
 Content-Type: application/json
 
 {
-    "name": "cesar ruscica",
+    "name": "hernan ruscica",
     "number": "1132924558"
 }
 
@@ -20,6 +20,9 @@ post {{base_url}}/persons
 Content-Type: application/json
 
 {
-    "name": "Ada Lovelace",
-    "number": ""
+    "name": "Ada salvatierra",
+    "number": "145823"
 }
+
+### Testing no routes
+get {{base_url}}/noroute
