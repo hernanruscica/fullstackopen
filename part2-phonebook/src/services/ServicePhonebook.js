@@ -1,10 +1,7 @@
 import axios from "axios";
 
-//const baseUrl = 'http://localhost:3001/persons'; 
 const baseUrl = import.meta.env.VITE_ENDPOINT_BASEURL;
-const port = import.meta.env.VITE_ENDPOINT_PORT;
-const entityName = 'persons';
-const endpointUrl = `${baseUrl}:${port}/api/${entityName}`;
+const endpointUrl = `${baseUrl}`;
 
 const Create = (newObject) => {
     const request = axios.post(endpointUrl, newObject);
