@@ -50,12 +50,12 @@ const App = () => {
     const confirmDelete = window.confirm(`Delete ${name} ?`)
     if (confirmDelete){
       ServicePhonebook.Delete(id)
-      .then(deletedPerson => {
-        //console.log('deletedPerson', deletedPerson);
+      .then(response => {
+        //console.log('response', response);
         const updatedPersons = persons.filter(p=>p.id !== id);
         setPersons(updatedPersons);
         setFilteredPersons(updatedPersons);
-        setNotification({message: `Information of ${deletedPerson.name} deleted from server`, type: 'ok'});
+        setNotification({message: `Information of ${name} deleted from server`, type: 'ok'});
             setTimeout(() => {
               setNotification({message: null, type: 'ok'});
             }, 2500);    
@@ -74,17 +74,14 @@ const App = () => {
   }
 
   const handleSubmit = (event) => {
-    event.preventDefault();  
-    //prevents duplicate ids.
-    let nextAvailableId = calculateFirstSpace(persons.map(p=>p.id));
-    const newPerson = {
-      id: String(nextAvailableId),
+    event.preventDefault();     
+    
+    const newPerson = {      
       name: newName,
       number: newNumber
     };  
-    const personAlreadyStored = persons.find(person => person.name === newName);
-    //console.log(personAlreadyStored);
     
+    const personAlreadyStored = persons.find(person => person.name === newName);
     const nameAlreadyExists = personAlreadyStored !== undefined;
     
     if (!nameAlreadyExists){

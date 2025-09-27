@@ -98,7 +98,7 @@ app.post('/api/persons', (request, response) => {
 
     const success = saveData(dataURL, updatedPersons);
     if (success) {
-        response.status(200).json(updatedPersons);
+        response.status(200).json(newPerson);
     }
 
     
