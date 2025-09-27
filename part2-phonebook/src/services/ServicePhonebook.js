@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_ENDPOINT_BASEURL;
-const endpointUrl = `${baseUrl}`;
+const endpointUrl = `${baseUrl}`; 
 
 const Create = (newObject) => {
     const request = axios.post(endpointUrl, newObject);
