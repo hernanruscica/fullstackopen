@@ -10,5 +10,6 @@ Frontend Folder: [Part2-Phonebook](https://github.com/hernanruscica/fullstackope
 
 ## Time used
 
-- Part3 until exercise 3.6 - 3.8 : 5Hs.
+- Part3 until exercise 3.11 : 8Hs
+- part3 debugging : 01:15:45
 
