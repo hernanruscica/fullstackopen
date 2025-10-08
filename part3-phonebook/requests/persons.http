@@ -1,18 +1,23 @@
 
 @base_url = http://localhost:3000/api
+
+### Get all persons
 get {{base_url}}/persons
 
+### Get person with id 1
+get {{base_url}}/persons/68e5a5602569f7edff3eb6f1
+
 ### Delete test for user 4
-delete {{base_url}}/persons/175881300949215
+delete {{base_url}}/persons/68e5a40554d90557f64d6a78
 
 ### PUT test for user 1
 
-put {{base_url}}/persons/1
+put {{base_url}}/persons/68e5a40054d90557f64d6a76
 Content-Type: application/json
 
 {
-    "name": "hernan ruscica",
-    "number": "1132924558"
+    "name": "cesar pedroza",
+    "number": "257894563"
 }
 
 ### post test
@@ -20,9 +25,12 @@ post {{base_url}}/persons
 Content-Type: application/json
 
 {
-    "name": "Ada salvatierra",
+    "name": "Juan PErez",
     "number": "145823"
 }
 
 ### Testing no routes
 get {{base_url}}/noroute
+
+### api info with the number of persons in the phonebook
+get {{base_url}}/info

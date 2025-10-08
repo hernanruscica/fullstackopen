@@ -11,7 +11,7 @@ const password = process.argv[2]
 const name = process.argv[3];
 const number = process.argv[4];
 
-const url = `mongodb+srv://cesarhernanruscica_db_user:${password}@cluster0.o4s8syp.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`;
+const url = process.env.MONGODB_URI;
 
 mongoose.set('strictQuery',false)
 

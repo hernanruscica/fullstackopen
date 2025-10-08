@@ -8,8 +8,9 @@ Backend Folder: [Part3-Phonebook](https://github.com/hernanruscica/fullstackopen
 
 Frontend Folder: [Part2-Phonebook](https://github.com/hernanruscica/fullstackopen/tree/main/part2-phonebook)
 
-## Time used
+## Time spent
 
 - Part3 until exercise 3.11 : 8Hs
 - part3 debugging : 01:15:45
-
+- part3 until 3.12: Command-line database: 01:43:33
+- part3 until 3.14: Phonebook database, step 2: 01:48

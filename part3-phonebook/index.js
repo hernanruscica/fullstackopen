@@ -2,11 +2,14 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT | 3000;
 const fs = require('fs');
-const dataURL = './data.json';
-let persons = require(dataURL);
+//const dataURL = './data.json';
+//let persons = require(dataURL);
+const PersonModel = require('./models/person');
 
 const saveData = (fileURL, data) => {
     fs.writeFileSync(fileURL, JSON.stringify(data, null, 2));
@@ -24,33 +27,53 @@ app.use(express.static('dist'))
 
 
 app.get('/api/persons', (request, response) => {      
-    response.json(persons);
+    //response.json(persons);
+    PersonModel.find().then(results => {
+        response.json(results);
+    });
 });
+
 app.get('/api/info', (request, response) => {
     const requestDate = new Date();
-    response.send(`Phonebook has info for ${persons.length} people<br> ${requestDate}`);
+    PersonModel.find().then(results => {        
+        response.send(`Phonebook has info for ${results.length} persons at ${requestDate}`);
+    });
 });
+
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id;
-    const person = persons.find(p => p.id === id);
-    if (person){
-        response.send(person);
-    }
+
+    PersonModel.findById(id).then(person => {
+        if (person) {
+            response.status(200).json(person);
+        } else {
+            response.status(404).end();
+        }
+    }).catch(error => {
+        console.log(error);
+        response.status(400).send({ error: 'malformatted id' });
+    });   
 });
+
 app.delete('/api/persons/:id', (request, response) => {
     const id = request.params.id;
-    const personExists = persons.some(p => p.id === id);
 
-    if (!personExists) {
-        return response.status(404).json({status: false, message: 'Person not found' });
-    }
-
-    persons = persons.filter(p => p.id !== id);    
-    const success = saveData(dataURL, persons);
-
-    if (success){
-        response.status(204).end();
-    }
+    PersonModel.findById(id).then(result => {
+        if (result) {
+            PersonModel.deleteOne({ _id: id }).then(() => {
+                response.status(204).end();
+            }).catch(error => {
+                console.log(error);
+                response.status(500).json({ error: 'Failed to delete the person' });
+            });            
+        } else {
+            response.status(404).json({ status: false, message: 'Person not found' });
+        }
+    }).catch(error => {
+        console.log(error);
+        response.status(400).send({ error: 'malformatted id' });
+    });    
+   
 });
 
 app.put('/api/persons/:id', (request, response) => {
@@ -61,48 +84,59 @@ app.put('/api/persons/:id', (request, response) => {
         return response.status(400).json({ error: 'name or number is missing' });
     }
 
-    const personIndex = persons.findIndex(p => p.id === id);
+    PersonModel.findById(id).then(person => {
+        if (!person) {
+            return response.status(404).json({ error: 'Person not found' });
+        }
 
-    if (personIndex === -1) {
-        return response.status(404).json({ error: 'Person not found' });
-    }
+        person.name = name;
+        person.number = number;
+        
+        person.save().then(updatedPerson => {
+            response.status(200).json(updatedPerson);
+        }).catch(error => {
+            console.log(error);
+            response.status(500).json({ error: 'Failed to update the person' });
+        });
 
-    const updatedPerson = { ...persons[personIndex], name, number };
-    persons[personIndex] = updatedPerson;    
-    const success = saveData(dataURL, persons);
-    if (success) {
-        response.status(200).json(updatedPerson);
-    }
-
+    }).catch(error => {
+        console.log(error);
+        response.status(400).send({ error: 'malformatted id' });
+    });    
 });
 
 app.post('/api/persons', (request, response) => {
-    const {name, number} = request.body;    
-    const nameIsUnique = persons.find(p => p.name === name) == undefined;    
-
+    const {name, number} = request.body;   
+    
     if (name === '' || number === ''){
         return response.status(400).json({success: false, message: "The name or number is missing"})
     }
-    if (!nameIsUnique){
-        return response.status(409).json({success: false, message: 'The name already exists in the phonebook, and names must be unique'});
-    }
-    const nowString = Date.now().toString();
-    const randomIdString = Math.floor(Math.random() * 256).toString()
+    
+    PersonModel.find().then(results => {        
+        const nameIsUnique = results.find(p => p.name === name) == undefined;
+        if (!nameIsUnique){
+            return response.status(409).json({success: false, message: 'The name already exists in the phonebook, and names must be unique'});
+        }   
+
+        const newPerson = new PersonModel({        
+            name: name,
+            number: number
+        });
+
+        newPerson.save().then(savedPerson => {
+            response.status(201).json(savedPerson);
+        }).catch(error => {
+            console.log(error);
+            response.status(500).json({ error: 'Failed to save the person' });
+        });
+
+    }).catch(error => {
+        console.log(error);
+        response.status(500).json({ error: 'Failed to fetch persons' });
+    });
 
     
-    const newPerson = {
-        id: nowString + randomIdString,
-        name: name,
-        number: number
-    }
-    const updatedPersons = persons.concat(newPerson);
 
-    const success = saveData(dataURL, updatedPersons);
-    if (success) {
-        response.status(200).json(newPerson);
-    }
-
-    
 })
 
 const unknownEndpoint = (request, response) => {
