@@ -5,7 +5,7 @@
 get {{base_url}}/persons
 
 ### Get person with id 1
-get {{base_url}}/persons/68e5a5602569f7edff3eb6f1
+get {{base_url}}/persons/68e5a40054d90557f64d6a76
 
 ### Delete test for user 4
 delete {{base_url}}/persons/68e5a40554d90557f64d6a78
@@ -16,8 +16,8 @@ put {{base_url}}/persons/68e5a40054d90557f64d6a76
 Content-Type: application/json
 
 {
-    "name": "cesar pedroza",
-    "number": "257894563"
+    "name": "Juan PErez",
+    "number": "145823"
 }
 
 ### post test
@@ -25,8 +25,8 @@ post {{base_url}}/persons
 Content-Type: application/json
 
 {
-    "name": "Juan PErez",
-    "number": "145823"
+    "name": "Juan gomez",
+    "number": "145666"
 }
 
 ### Testing no routes
