@@ -25,8 +25,8 @@ post {{base_url}}/persons
 Content-Type: application/json
 
 {
-    "name": "Juan gomez",
-    "number": "145666"
+    "name": "petere",
+    "number": "1-666552"
 }
 
 ### Testing no routes
