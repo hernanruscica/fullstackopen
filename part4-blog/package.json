@@ -1,0 +1,27 @@
+{
+  "name": "part4-blog",
+  "version": "1.0.0",
+  "description": "part4 for the FullStackOpen course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fullstackopen",
+    "node",
+    "backend",
+    "part4",
+    "blog"
+  ],
+  "author": "Cesar Hernan Ruscica",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1"
+  }
+}

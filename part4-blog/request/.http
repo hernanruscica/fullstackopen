@@ -1,0 +1,15 @@
+@base_url = http://localhost:3000/api
+
+### Get all blog
+get {{base_url}}/blogs
+
+### Create new blog
+POST {{base_url}}/blogs
+Content-Type: application/json  
+
+{
+  "title": "My first blog",
+  "author": "Cesar",
+  "url": "http://myblog.com",
+  "likes": 1
+}

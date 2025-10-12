@@ -16,3 +16,5 @@ Frontend Folder: [Part2-Phonebook](https://github.com/hernanruscica/fullstackope
 - part3 until 3.14: Phonebook database, step 2: 01:48 hs
 - part3 until 3.18*: Phonebook database step 6: 01:55 hs
 - part3 completed : 01:25 hs
+- part4 before Exercises 4.1.-4.2. : 00:30 hs.
+- part4 until Exercise 4.1 - 4.2 : 01:50 hs
