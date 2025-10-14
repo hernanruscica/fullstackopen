@@ -1,6 +1,21 @@
-const { test, describe } = require('node:test')
+const { test, describe, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
-const listHelper = require('../utils/list_helper')
+const listHelper = require('../utils/list_helper');
+const mongoose = require('mongoose'); //to close the connection after the tests
+const Blog = require('../models/BlogModel');
+const supertest = require('supertest'); //to test the express app, the api itself
+
+const app = require('../app')
+const api = supertest(app)
+
+
+beforeEach(async () => {
+  const cleared = await Blog.deleteMany()
+  //console.log('cleared ', cleared);  
+  const response = await Blog.insertMany(listHelper.initialBlogs)
+  //console.log('inserted ', response.length);
+  
+})
 
 test('dummy returns one', () => {
   const blogs = []
@@ -77,4 +92,16 @@ describe('total likes', () => {
         }
     ]);
     });
+});
+/**/
+test('blog posts in the JSON format', async () => {
+  const response =  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/);    
+  assert.strictEqual(response.body.length, listHelper.initialBlogs.length);
+});
+
+after(async () => {
+  await mongoose.connection.close();
 });

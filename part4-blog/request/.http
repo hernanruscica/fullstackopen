@@ -8,8 +8,8 @@ POST {{base_url}}/blogs
 Content-Type: application/json  
 
 {
-  "title": "My first blog",
-  "author": "Cesar",
+  "title": "My second blog",
+  "author": "pedro",
   "url": "http://myblog.com",
-  "likes": 1
+  "likes": 2
 }
