@@ -7,7 +7,7 @@
     "start": "NODE_ENV='production' node index.js",
     "dev": "NODE_ENV='development' node --watch index.js",
     "test": "NODE_ENV='test' node --test",
-    "test_blogs": "NODE_ENV='test' node --test --test-name-pattern='blog posts in the JSON format'"
+    "test_blogs": "NODE_ENV='test' node --test --test-name-pattern='adding a blog without title and url properties'" 
   },
   "keywords": [
     "fullstackopen",

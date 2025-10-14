@@ -13,6 +13,11 @@ BlogRouter.get('/', async (request, response, next) => {
 
 BlogRouter.post('/', async (request, response, next) => {
   const { body } = request;
+  if (!body.title || !body.url) {
+    return response.status(400).json({ 
+      error: 'Title or URL missing' 
+    });
+  }
   const blog = new BlogModel({
     title: body.title,
     author: body.author,

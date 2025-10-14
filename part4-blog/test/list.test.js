@@ -99,8 +99,75 @@ test('blog posts in the JSON format', async () => {
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/);    
-  assert.strictEqual(response.body.length, listHelper.initialBlogs.length);
+  assert.strictEqual(response.body.length, listHelper.initialBlogs.length);  
 });
+
+test('blogs have id field', async () => {
+  const response =  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/);
+  response.body.forEach(blog => {
+    assert.ok(blog.hasOwnProperty('id'));
+  });
+});
+
+test('adding a valid blog', async () => {
+  const newBlog = {
+    title: "New blog for testing",
+    author: "Cesar",
+    url: "http://example.com/new-blog",
+    likes: 10
+  };
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/);
+
+  const response = await api.get('/api/blogs');
+  const titles = response.body.map(r => r.title);
+
+  assert.strictEqual(response.body.length, listHelper.initialBlogs.length + 1);
+  assert.ok(titles.includes('New blog for testing'));
+});
+
+test('adding a blog without the likes property', async () => {
+  const newBlog = {
+    title: "Blog without likes",
+    author: "Cesar",
+    url: "http://example.com/blog-without-likes"
+  };  
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+    .expect(res => {
+       if (!newBlog.hasOwnProperty('likes')) {
+            assert.strictEqual(res.body.likes, 0);
+        }});
+});
+
+test('adding a blog without title and url properties', async () => {
+  const newBlog = {
+    likes: 10,
+    author: "Cesar"
+  };
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+    .expect(res => {
+       if (!newBlog.hasOwnProperty('title') || !newBlog.hasOwnProperty('url')) {
+            assert.strictEqual(res.body.error, 'Title or URL missing');
+        }});  
+});
+
+ 
 
 after(async () => {
   await mongoose.connection.close();
