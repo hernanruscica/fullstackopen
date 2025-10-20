@@ -167,6 +167,32 @@ test('adding a blog without title and url properties', async () => {
         }});  
 });
 
+test('deleting a blog', async () => {
+  const blogsAtStart = await listHelper.blogsInDb();
+  const blogToDelete = blogsAtStart[0];  
+  
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+ 
+  const blogsAtEnd = await listHelper.blogsInDb();
+  assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1);
+});
+
+test('updating a blog likes', async () => {
+  const blogsAtStart = await listHelper.blogsInDb();
+  const blogToUpdate = blogsAtStart[0];  
+  const updatedBlog = {
+    title: blogToUpdate.title,
+    author: blogToUpdate.author,
+    url: blogToUpdate.url,
+    likes: blogToUpdate.likes + 2
+  }
+
+  const updateBlogResponse = await api.put(`/api/blogs/${blogToUpdate.id}`).send(updatedBlog).expect(200);
+  //console.log('updatedBlogResponse', updateBlogResponse.body);
+  
+  assert.strictEqual(blogToUpdate.likes, updateBlogResponse.body.likes - 2);
+})
+
  
 
 after(async () => {

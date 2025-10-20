@@ -8,8 +8,21 @@ POST {{base_url}}/blogs
 Content-Type: application/json  
 
 {
-  "title": "My second blog",
-  "author": "pedro",
+  "title": "My first blog",
+  "author": "John",
   "url": "http://myblog.com",
-  "likes": 2
+  "likes": 6
+}
+
+### Delete a single post 
+
+DELETE {{base_url}}/blogs/68f634805bcb90382be87e70
+Content-Type: application/json
+
+### updatting blog 
+PUT {{base_url}}/blogs/68f645cd8cb187e90de0198e
+Content-Type: application/json
+
+{
+  "likes": 10
 }
